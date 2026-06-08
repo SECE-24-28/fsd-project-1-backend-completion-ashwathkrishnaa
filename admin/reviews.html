@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviews – ASKR Admin</title>
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body data-title="Reviews" data-breadcrumb="Reviews">
+<div class="admin-wrapper">
+  <div id="sidebar-placeholder"></div>
+  <div class="main-content" id="mainContent">
+    <div id="header-placeholder"></div>
+    <div class="page-content">
+
+      <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px">
+        <div class="stat-card gold"><div><div class="stat-label">Avg Rating</div><div class="stat-value">4.7★</div></div><div class="stat-icon gold"><i class="fas fa-star"></i></div></div>
+        <div class="stat-card green"><div><div class="stat-label">Total Reviews</div><div class="stat-value">2,840</div></div><div class="stat-icon green"><i class="fas fa-comment"></i></div></div>
+        <div class="stat-card orange"><div><div class="stat-label">Pending Approval</div><div class="stat-value">14</div></div><div class="stat-icon orange"><i class="fas fa-clock"></i></div></div>
+        <div class="stat-card blue"><div><div class="stat-label">5-Star Reviews</div><div class="stat-value">72%</div></div><div class="stat-icon blue"><i class="fas fa-thumbs-up"></i></div></div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3>Customer Reviews</h3>
+          <div style="display:flex;gap:10px">
+            <select class="form-control" id="reviewFilter" style="width:auto;padding:7px 12px;font-size:0.82rem" onchange="renderReviews()">
+              <option value="">All Ratings</option>
+              <option value="5">5 Stars</option><option value="4">4 Stars</option>
+              <option value="3">3 Stars</option><option value="2">2 Stars</option><option value="1">1 Star</option>
+            </select>
+            <select class="form-control" id="reviewStatus" style="width:auto;padding:7px 12px;font-size:0.82rem" onchange="renderReviews()">
+              <option value="">All</option>
+              <option value="approved">Approved</option>
+              <option value="pending">Pending</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="admin-table" id="reviewsTable"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="admin.js"></script>
+<script src="admin-components.js"></script>
+<script>
+const reviews = [
+  { id:'r1', customer:'Arjun S', product:'Premium Oversized Tee', rating:5, comment:'Exceptional quality! The fabric feels incredibly premium.', date:'Mar 22, 2025', status:'approved' },
+  { id:'r2', customer:'Priya N', product:'Silk Kurti Set',         rating:5, comment:'Love this! Perfect for festive occasions.', date:'Mar 21, 2025', status:'approved' },
+  { id:'r3', customer:'Rahul V', product:'Bomber Jacket',          rating:4, comment:'The jacket is fire! Got so many compliments.', date:'Mar 20, 2025', status:'pending' },
+  { id:'r4', customer:'Sneha R', product:'Floral Chiffon Dress',   rating:5, comment:'Absolutely stunning dress! Fast delivery too.', date:'Mar 19, 2025', status:'approved' },
+  { id:'r5', customer:'Vikram P',product:'Slim Fit Jeans',         rating:3, comment:'Good but sizing is a bit off.', date:'Mar 18, 2025', status:'pending' },
+  { id:'r6', customer:'Ananya S',product:'Oxford Formal Shirt',    rating:2, comment:'Poor stitching quality. Not satisfied.', date:'Mar 17, 2025', status:'rejected' },
+];
+
+function renderReviews() {
+  const rf = document.getElementById('reviewFilter').value;
+  const sf = document.getElementById('reviewStatus').value;
+  const filtered = reviews.filter(r =>
+    (!rf || r.rating === +rf) && (!sf || r.status === sf)
+  );
+  document.getElementById('reviewsTable').innerHTML = `
+    <thead><tr>
+      <th>Customer</th><th>Product</th><th>Rating</th><th>Review</th>
+      <th>Date</th><th>Status</th><th>Actions</th>
+    </tr></thead>
+    <tbody>${filtered.map(r => `
+      <tr>
+        <td><div style="display:flex;gap:10px;align-items:center">
+          <div class="avatar-sm">${r.customer[0]}</div>
+          <span style="font-size:0.84rem;font-weight:600">${r.customer}</span>
+        </div></td>
+        <td style="font-size:0.82rem;color:var(--text-muted)">${r.product}</td>
+        <td><span style="color:var(--gold);font-size:0.9rem">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span></td>
+        <td style="font-size:0.82rem;max-width:250px">${r.comment}</td>
+        <td style="font-size:0.78rem;color:var(--text-muted)">${r.date}</td>
+        <td>${statusBadge(r.status)}</td>
+        <td><div style="display:flex;gap:6px">
+          ${r.status!=='approved'?`<button class="btn btn-success btn-xs" onclick="updateReview('${r.id}','approved')"><i class="fas fa-check"></i></button>`:''}
+          ${r.status!=='rejected'?`<button class="btn btn-danger btn-xs" onclick="updateReview('${r.id}','rejected')"><i class="fas fa-times"></i></button>`:''}
+        </div></td>
+      </tr>`).join('')}
+    </tbody>`;
+}
+
+function updateReview(id, status) {
+  const r = reviews.find(x => x.id === id);
+  if (r) { r.status = status; renderReviews(); showToast(status==='approved'?'✅':'🗑️',`Review ${status}`); }
+}
+
+document.addEventListener('DOMContentLoaded', renderReviews);
+</script>
+</body>
+</html>

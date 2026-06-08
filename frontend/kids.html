@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kids' Collection – ASKR Clothing</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root { --kids-accent: #4FC3F7; --kids-pink: #F48FB1; --kids-green: #81C784; }
+.collection-banner { height: 280px; position: relative; overflow: hidden; }
+.collection-banner img { width: 100%; height: 100%; object-fit: cover; opacity: 0.3; }
+.collection-banner-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, rgba(13,13,13,0.92)); display: flex; align-items: flex-end; padding: 40px 5%; }
+.cat-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 30px; }
+.cat-tab { padding: 8px 20px; border-radius: 50px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Poppins', sans-serif; }
+.cat-tab[data-color="blue"].active, .cat-tab[data-color="blue"]:hover { background: var(--kids-accent); border-color: var(--kids-accent); color: #111; }
+.cat-tab[data-color="pink"].active, .cat-tab[data-color="pink"]:hover { background: var(--kids-pink); border-color: var(--kids-pink); color: #111; }
+.cat-tab[data-color="green"].active, .cat-tab[data-color="green"]:hover { background: var(--kids-green); border-color: var(--kids-green); color: #111; }
+.cat-tab.active { color: #111; }
+.age-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.age-btn { padding: 6px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: var(--text-muted); transition: all 0.3s; font-family: 'Poppins', sans-serif; }
+.age-btn.active, .age-btn:hover { background: var(--kids-accent); border-color: var(--kids-accent); color: #111; }
+.kids-banner-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 40px 5%; }
+.kids-banner-card { border-radius: 16px; overflow: hidden; height: 220px; position: relative; cursor: pointer; }
+.kids-banner-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.kids-banner-card:hover img { transform: scale(1.06); }
+.kids-banner-card-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 20px; }
+@media (max-width: 768px) { .kids-banner-cards { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .kids-banner-cards { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+
+<div style="padding-top:70px">
+  <div class="collection-banner">
+    <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1400&q=80" alt="Kids">
+    <div class="collection-banner-overlay">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(79,195,247,0.12);border:1px solid rgba(79,195,247,0.3);border-radius:50px;padding:6px 16px;font-size:0.75rem;color:var(--kids-accent);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px">
+          <i class="fas fa-child"></i> Kids' Collection
+        </div>
+        <h1 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:900">Dress Them <span style="color:var(--kids-accent)">Happy</span></h1>
+        <p style="color:var(--text-muted);margin-top:6px">Boys · Girls · Infants — Premium & Playful</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK CATEGORY BANNERS -->
+<div class="kids-banner-cards">
+  <div class="kids-banner-card" onclick="setKidsTab(document.querySelector('[data-tab=boys]'),'boys')">
+    <img src="https://images.unsplash.com/photo-1595341888016-a392ef81b7de?w=500&q=80" alt="Boys">
+    <div class="kids-banner-card-overlay" style="background:linear-gradient(to top,rgba(79,195,247,0.7),transparent)">
+      <span style="font-family:Montserrat;font-size:1.2rem;font-weight:800;color:#111">Boys' Wear</span>
+      <span style="font-size:0.75rem;color:rgba(0,0,0,0.6);margin-top:4px">145 Products</span>
+    </div>
+  </div>
+  <div class="kids-banner-card" onclick="setKidsTab(document.querySelector('[data-tab=girls]'),'girls')">
+    <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=500&q=80" alt="Girls">
+    <div class="kids-banner-card-overlay" style="background:linear-gradient(to top,rgba(244,143,177,0.7),transparent)">
+      <span style="font-family:Montserrat;font-size:1.2rem;font-weight:800;color:#111">Girls' Wear</span>
+      <span style="font-size:0.75rem;color:rgba(0,0,0,0.6);margin-top:4px">168 Products</span>
+    </div>
+  </div>
+  <div class="kids-banner-card" onclick="setKidsTab(document.querySelector('[data-tab=infant]'),'infant')">
+    <img src="https://images.unsplash.com/photo-1522771930-78848d9293e8?w=500&q=80" alt="Infants">
+    <div class="kids-banner-card-overlay" style="background:linear-gradient(to top,rgba(129,199,132,0.7),transparent)">
+      <span style="font-family:Montserrat;font-size:1.2rem;font-weight:800;color:#111">Infant Wear</span>
+      <span style="font-size:0.75rem;color:rgba(0,0,0,0.6);margin-top:4px">82 Products</span>
+    </div>
+  </div>
+</div>
+
+<div class="shop-layout">
+  <aside class="filter-sidebar">
+    <div class="filter-title">Filters</div>
+    <div class="filter-section">
+      <h5>Age Group</h5>
+      <div class="filter-option"><input type="checkbox"><label>0-2 Years (Infant)</label></div>
+      <div class="filter-option"><input type="checkbox"><label>2-5 Years (Toddler)</label></div>
+      <div class="filter-option"><input type="checkbox"><label>5-10 Years</label></div>
+      <div class="filter-option"><input type="checkbox"><label>10-14 Years (Teen)</label></div>
+    </div>
+    <div class="filter-section">
+      <h5>Size</h5>
+      <div class="size-filters">
+        <button class="size-btn" onclick="this.classList.toggle('active')">0-6M</button>
+        <button class="size-btn" onclick="this.classList.toggle('active')">6-12M</button>
+        <button class="size-btn" onclick="this.classList.toggle('active')">1Y</button>
+        <button class="size-btn" onclick="this.classList.toggle('active')">2Y</button>
+        <button class="size-btn" onclick="this.classList.toggle('active')">4Y</button>
+        <button class="size-btn active" onclick="this.classList.toggle('active')">6Y</button>
+        <button class="size-btn" onclick="this.classList.toggle('active')">8Y</button>
+        <button class="size-btn" onclick="this.classList.toggle('active')">10Y</button>
+      </div>
+    </div>
+    <div class="filter-section">
+      <h5>Price Range</h5>
+      <input type="range" min="0" max="3000" value="3000" oninput="document.getElementById('kidsPriceVal').textContent='₹'+parseInt(this.value).toLocaleString()" style="accent-color:var(--kids-accent)">
+      <div class="price-display" style="color:var(--kids-accent)"><span>₹0</span><span id="kidsPriceVal">₹3,000</span></div>
+    </div>
+    <div class="filter-section">
+      <h5>Type</h5>
+      <div class="filter-option"><input type="checkbox"><label>Casual Wear</label></div>
+      <div class="filter-option"><input type="checkbox"><label>Party Wear</label></div>
+      <div class="filter-option"><input type="checkbox"><label>School Wear</label></div>
+      <div class="filter-option"><input type="checkbox"><label>Nightwear</label></div>
+    </div>
+    <button class="btn btn-full" style="background:var(--kids-accent);color:#111;margin-top:10px;padding:12px;border-radius:8px;font-family:Poppins;font-weight:700;font-size:0.85rem;cursor:pointer;border:none" onclick="showToast('✅','Filters applied')">Apply Filters</button>
+  </aside>
+
+  <div>
+    <div class="search-bar-shop">
+      <i class="fas fa-search"></i>
+      <input type="text" id="kidsSearch" placeholder="Search kids' collection..." oninput="filterKidsProducts()">
+    </div>
+
+    <div class="cat-tabs">
+      <button class="cat-tab active" data-tab="all" data-color="blue" onclick="setKidsTab(this,'all')">All Kids</button>
+      <button class="cat-tab" data-tab="boys" data-color="blue" onclick="setKidsTab(this,'boys')"><i class="fas fa-child"></i> Boys</button>
+      <button class="cat-tab" data-tab="girls" data-color="pink" onclick="setKidsTab(this,'girls')">Girls</button>
+      <button class="cat-tab" data-tab="infant" data-color="green" onclick="setKidsTab(this,'infant')">Infants</button>
+    </div>
+
+    <div class="shop-header">
+      <span class="results-count" id="kidsCount"></span>
+      <select class="sort-select" id="kidsSort" onchange="filterKidsProducts()">
+        <option>Sort: Featured</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="rating">Top Rated</option>
+      </select>
+    </div>
+
+    <div class="products-grid" id="kidsGrid"></div>
+    <div style="text-align:center;margin-top:40px;padding-bottom:20px">
+      <button class="btn btn-outline" onclick="kidsVisible+=8;filterKidsProducts()"><i class="fas fa-plus"></i> Load More</button>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="app.js"></script>
+<script src="components.js"></script>
+<script>
+let kidsActiveTab = 'all', kidsVisible = 8;
+const kidsProducts = [
+  ...PRODUCTS.filter(p => p.category === 'kids'),
+  { id:'k3', name:"Boys Cargo Shorts", price:499, originalPrice:899, category:'kids', subcategory:'boys', badge:'sale', rating:4.3, reviews:78, image:'https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=400&q=80', colors:['#87CEEB','#555'], sizes:['4Y','6Y','8Y','10Y'] },
+  { id:'k4', name:"Infant Onesie Set", price:349, originalPrice:599, category:'kids', subcategory:'infant', badge:'new', rating:4.8, reviews:45, image:'https://images.unsplash.com/photo-1522771930-78848d9293e8?w=400&q=80', colors:['#fff','#ffb6c1','#87CEEB'], sizes:['0-6M','6-12M','1Y'] },
+  { id:'k5', name:"Girls Floral Top", price:449, originalPrice:799, category:'kids', subcategory:'girls', badge:'', rating:4.5, reviews:112, image:'https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=400&q=80', colors:['#ffb6c1','#fff'], sizes:['2Y','4Y','6Y','8Y'] },
+  { id:'k6', name:"Boys Printed Hoodie", price:699, originalPrice:1199, category:'kids', subcategory:'boys', badge:'bestseller', rating:4.6, reviews:93, image:'https://images.unsplash.com/photo-1595341888016-a392ef81b7de?w=400&q=80', colors:['#87CEEB','#0D0D0D'], sizes:['4Y','6Y','8Y','10Y','12Y'] },
+];
+
+function setKidsTab(el, tab) {
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  kidsActiveTab = tab; kidsVisible = 8;
+  filterKidsProducts();
+}
+
+function filterKidsProducts() {
+  let res = kidsActiveTab === 'all' ? kidsProducts : kidsProducts.filter(p => p.subcategory === kidsActiveTab);
+  const q = document.getElementById('kidsSearch').value.toLowerCase();
+  if (q) res = res.filter(p => p.name.toLowerCase().includes(q));
+  const sort = document.getElementById('kidsSort').value;
+  if (sort === 'price-asc') res.sort((a,b) => a.price - b.price);
+  else if (sort === 'price-desc') res.sort((a,b) => b.price - a.price);
+  else if (sort === 'rating') res.sort((a,b) => b.rating - a.rating);
+  const shown = res.slice(0, kidsVisible);
+  document.getElementById('kidsCount').textContent = `${res.length} products found`;
+  document.getElementById('kidsGrid').innerHTML = shown.map(p => buildProductCard(p, 'var(--kids-accent)')).join('');
+  initWishlistBtns();
+}
+
+document.addEventListener('DOMContentLoaded', () => filterKidsProducts());
+</script>
+</body>
+</html>

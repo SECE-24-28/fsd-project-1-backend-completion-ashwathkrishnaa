@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register – ASKR Clothing</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+.auth-page { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; background: var(--primary); }
+.auth-visual { position: relative; overflow: hidden; background: linear-gradient(135deg, #1a0800 0%, #0D0D0D 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
+.auth-visual-bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&q=80') center/cover; opacity: 0.12; }
+.auth-visual-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,107,0,0.12) 0%, rgba(13,13,13,0.95) 60%); }
+.auth-visual-content { position: relative; z-index: 2; text-align: center; }
+.auth-brand-name { font-family: 'Montserrat', sans-serif; font-size: 2.5rem; font-weight: 900; letter-spacing: 10px; color: var(--text); margin-bottom: 8px; }
+.auth-brand-name span { color: var(--accent); }
+.auth-tagline { font-size: 0.85rem; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 40px; }
+.perks { display: flex; flex-direction: column; gap: 14px; max-width: 300px; margin: 0 auto; }
+.perk { display: flex; align-items: center; gap: 12px; background: rgba(255,107,0,0.07); border: 1px solid rgba(255,107,0,0.15); border-radius: 10px; padding: 12px 16px; }
+.perk i { color: var(--accent); font-size: 1rem; width: 20px; text-align: center; }
+.perk span { font-size: 0.82rem; color: var(--text-muted); }
+.perk strong { color: var(--text); }
+.auth-glow { position: absolute; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(255,107,0,0.1) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+.auth-form-side { display: flex; align-items: center; justify-content: center; padding: 40px; overflow-y: auto; }
+.auth-form-box { width: 100%; max-width: 460px; }
+.auth-form-header { margin-bottom: 32px; }
+.auth-form-header h2 { font-size: 1.9rem; font-weight: 800; margin-bottom: 6px; }
+.auth-form-header h2 span { color: var(--accent); }
+.auth-form-header p { color: var(--text-muted); font-size: 0.9rem; }
+.grid-2-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.strength-bar { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); margin-top: 8px; overflow: hidden; }
+.strength-fill { height: 100%; border-radius: 2px; transition: all 0.4s ease; width: 0; }
+.strength-text { font-size: 0.72rem; margin-top: 4px; }
+.terms-check { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px; }
+.terms-check input { margin-top: 2px; accent-color: var(--accent); }
+.terms-check span { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+.terms-check a { color: var(--accent); text-decoration: none; }
+.auth-switch { text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--text-muted); }
+.auth-switch a { color: var(--accent); text-decoration: none; font-weight: 600; }
+@media (max-width: 768px) {
+  .auth-page { grid-template-columns: 1fr; }
+  .auth-visual { display: none; }
+  .auth-form-side { padding: 30px 20px; }
+  .grid-2-form { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-visual">
+    <div class="auth-visual-bg"></div>
+    <div class="auth-visual-overlay"></div>
+    <div class="auth-glow"></div>
+    <div class="auth-visual-content">
+      <img src="askr-logo.png" alt="ASKR" style="width:70px;margin-bottom:16px" onerror="this.style.display='none'">
+      <div class="auth-brand-name">ASK<span>R</span></div>
+      <div class="auth-tagline">Join the Elite</div>
+      <div class="perks">
+        <div class="perk"><i class="fas fa-gift"></i><span><strong>Welcome Gift</strong> — 15% off first order</span></div>
+        <div class="perk"><i class="fas fa-star"></i><span><strong>Loyalty Points</strong> — Earn on every purchase</span></div>
+        <div class="perk"><i class="fas fa-bell"></i><span><strong>Early Access</strong> — New drops & sales</span></div>
+        <div class="perk"><i class="fas fa-tag"></i><span><strong>Member Prices</strong> — Exclusive discounts</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-form-box">
+      <div class="auth-form-header">
+        <h2>Create <span>Account</span></h2>
+        <p>Join thousands of ASKR fashion lovers</p>
+      </div>
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <div class="input-group">
+            <i class="fas fa-user input-icon"></i>
+            <input type="text" class="form-control" id="fullName" placeholder="Your full name" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <div class="input-group">
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" class="form-control" id="regEmail" placeholder="you@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Mobile Number</label>
+          <div class="input-group">
+            <i class="fas fa-phone input-icon"></i>
+            <input type="tel" class="form-control" id="mobile" placeholder="+91 9876543210" pattern="[0-9+\-\s]{10,14}" required>
+          </div>
+        </div>
+        <div class="grid-2-form">
+          <div class="form-group">
+            <label>Password</label>
+            <div class="input-group">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" class="form-control" id="regPassword" placeholder="Min 8 characters" oninput="checkStrength(this.value)" required>
+              <button type="button" class="input-toggle" onclick="togglePass('regPassword',this)"><i class="far fa-eye"></i></button>
+            </div>
+            <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+            <div class="strength-text" id="strengthText"></div>
+          </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <div class="input-group">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" class="form-control" id="confirmPassword" placeholder="Re-enter password" required>
+              <button type="button" class="input-toggle" onclick="togglePass('confirmPassword',this)"><i class="far fa-eye"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Gender <span style="color:var(--text-muted);font-size:0.75rem">(Optional)</span></label>
+          <select class="form-control sort-select" style="width:100%;background:rgba(255,255,255,0.05)">
+            <option value="" style="background:#1a1a1a">Prefer not to say</option>
+            <option value="male" style="background:#1a1a1a">Male</option>
+            <option value="female" style="background:#1a1a1a">Female</option>
+            <option value="other" style="background:#1a1a1a">Other</option>
+          </select>
+        </div>
+        <div class="terms-check">
+          <input type="checkbox" id="terms" required>
+          <span>I agree to ASKR's <a href="terms.html">Terms & Conditions</a> and <a href="privacy.html">Privacy Policy</a></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg">
+          <i class="fas fa-user-plus"></i> Create My Account
+        </button>
+      </form>
+      <div class="auth-switch">Already have an account? <a href="login.html">Sign In</a></div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+function togglePass(id, btn) {
+  const inp = document.getElementById(id);
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.innerHTML = `<i class="far fa-eye${inp.type === 'text' ? '-slash' : ''}"></i>`;
+}
+function checkStrength(val) {
+  const fill = document.getElementById('strengthFill');
+  const text = document.getElementById('strengthText');
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const levels = [
+    { w: '25%', c: '#e74c3c', t: 'Weak' },
+    { w: '50%', c: '#e67e22', t: 'Fair' },
+    { w: '75%', c: '#f1c40f', t: 'Good' },
+    { w: '100%', c: '#2ecc71', t: 'Strong' }
+  ];
+  const l = levels[Math.max(0, score - 1)] || levels[0];
+  fill.style.width = val ? l.w : '0';
+  fill.style.background = l.c;
+  text.textContent = val ? l.t : '';
+  text.style.color = l.c;
+}
+function handleRegister(e) {
+  e.preventDefault();
+  const pwd = document.getElementById('regPassword').value;
+  const confirm = document.getElementById('confirmPassword').value;
+  if (pwd !== confirm) { alert('Passwords do not match!'); return; }
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+  btn.disabled = true;
+  setTimeout(() => {
+    localStorage.setItem('askr_user', JSON.stringify({
+      name: document.getElementById('fullName').value,
+      email: document.getElementById('regEmail').value
+    }));
+    window.location.href = 'home.html';
+  }, 1800);
+}
+</script>
+</body>
+</html>

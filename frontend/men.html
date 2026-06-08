@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Men's Collection – ASKR Clothing</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+.cat-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 30px; }
+.cat-tab { padding: 8px 20px; border-radius: 50px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Poppins', sans-serif; letter-spacing: 0.5px; }
+.cat-tab.active, .cat-tab:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.filter-mobile-btn { display: none; }
+.collection-banner { height: 300px; position: relative; overflow: hidden; }
+.collection-banner img { width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
+.collection-banner-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, rgba(13,13,13,0.9)); display: flex; align-items: flex-end; padding: 40px 5%; }
+@media (max-width: 768px) {
+  .filter-mobile-btn { display: block; }
+  .filter-sidebar { display: none; }
+  .filter-sidebar.mobile-open { display: block; position: fixed; top: 0; left: 0; bottom: 0; width: 280px; z-index: 1100; overflow-y: auto; border-radius: 0 14px 14px 0; }
+}
+</style>
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+
+<!-- BANNER -->
+<div style="padding-top:70px">
+  <div class="collection-banner">
+    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=1400&q=80" alt="Men's Collection">
+    <div class="collection-banner-overlay">
+      <div>
+        <div class="hero-badge" style="margin-bottom:10px"><i class="fas fa-male"></i> Men's Collection</div>
+        <h1 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:900">The <span style="color:var(--accent)">Bold</span> Collection</h1>
+        <p style="color:var(--text-muted);margin-top:6px">Shirts · T-Shirts · Jeans · Hoodies · Jackets</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="shop-layout">
+  <!-- FILTER SIDEBAR -->
+  <aside class="filter-sidebar" id="filterSidebar">
+    <div class="filter-title">Filters <span class="clear-filters" onclick="clearFilters()">Clear All</span></div>
+
+    <div class="filter-section">
+      <h5>Category</h5>
+      <div class="filter-option"><input type="checkbox" id="fc-shirts" class="filter-check" data-cat="shirts"><label for="fc-shirts">Shirts (124)</label></div>
+      <div class="filter-option"><input type="checkbox" id="fc-tshirts" class="filter-check" data-cat="tshirts"><label for="fc-tshirts">T-Shirts (198)</label></div>
+      <div class="filter-option"><input type="checkbox" id="fc-jeans" class="filter-check" data-cat="jeans"><label for="fc-jeans">Jeans (86)</label></div>
+      <div class="filter-option"><input type="checkbox" id="fc-hoodies" class="filter-check" data-cat="hoodies"><label for="fc-hoodies">Hoodies (74)</label></div>
+      <div class="filter-option"><input type="checkbox" id="fc-jackets" class="filter-check" data-cat="jackets"><label for="fc-jackets">Jackets (52)</label></div>
+    </div>
+
+    <div class="filter-section">
+      <h5>Price Range</h5>
+      <input type="range" min="0" max="10000" value="10000" id="priceRange" oninput="updatePrice(this.value)">
+      <div class="price-display"><span>₹0</span><span id="priceVal">₹10,000</span></div>
+    </div>
+
+    <div class="filter-section">
+      <h5>Size</h5>
+      <div class="size-filters">
+        <button class="size-btn" onclick="toggleSize(this)">XS</button>
+        <button class="size-btn" onclick="toggleSize(this)">S</button>
+        <button class="size-btn active" onclick="toggleSize(this)">M</button>
+        <button class="size-btn" onclick="toggleSize(this)">L</button>
+        <button class="size-btn" onclick="toggleSize(this)">XL</button>
+        <button class="size-btn" onclick="toggleSize(this)">XXL</button>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h5>Color</h5>
+      <div class="color-swatches">
+        <div class="color-swatch active" style="background:#0D0D0D;border-color:var(--accent)" title="Black"></div>
+        <div class="color-swatch" style="background:#fff" title="White"></div>
+        <div class="color-swatch" style="background:#FF6B00" title="Orange"></div>
+        <div class="color-swatch" style="background:#1a3a5c" title="Navy"></div>
+        <div class="color-swatch" style="background:#555" title="Grey"></div>
+        <div class="color-swatch" style="background:#2d4a22" title="Olive"></div>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <h5>Rating</h5>
+      <div class="filter-option"><input type="radio" name="rating" id="r4"><label for="r4" style="color:var(--gold)">★★★★☆ & above</label></div>
+      <div class="filter-option"><input type="radio" name="rating" id="r3"><label for="r3" style="color:var(--gold)">★★★☆☆ & above</label></div>
+    </div>
+
+    <button class="btn btn-primary btn-full" onclick="applyFilters()" style="margin-top:10px">Apply Filters</button>
+  </aside>
+
+  <!-- PRODUCTS AREA -->
+  <div>
+    <div class="search-bar-shop">
+      <i class="fas fa-search"></i>
+      <input type="text" id="shopSearch" placeholder="Search men's collection..." oninput="filterProducts()">
+    </div>
+
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab active" data-tab="all" onclick="setTab(this,'all')">All</button>
+      <button class="cat-tab" data-tab="shirts" onclick="setTab(this,'shirts')"><i class="fas fa-tshirt"></i> Shirts</button>
+      <button class="cat-tab" data-tab="tshirts" onclick="setTab(this,'tshirts')">T-Shirts</button>
+      <button class="cat-tab" data-tab="jeans" onclick="setTab(this,'jeans')">Jeans</button>
+      <button class="cat-tab" data-tab="hoodies" onclick="setTab(this,'hoodies')">Hoodies</button>
+      <button class="cat-tab" data-tab="jackets" onclick="setTab(this,'jackets')">Jackets</button>
+    </div>
+
+    <div class="shop-header">
+      <div>
+        <button class="btn btn-outline btn-sm filter-mobile-btn" onclick="document.getElementById('filterSidebar').classList.toggle('mobile-open')">
+          <i class="fas fa-sliders-h"></i> Filters
+        </button>
+        <span class="results-count" id="resultsCount" style="margin-left:10px"></span>
+      </div>
+      <select class="sort-select" id="sortSelect" onchange="filterProducts()">
+        <option value="default">Sort by: Featured</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="rating">Top Rated</option>
+        <option value="newest">Newest First</option>
+      </select>
+    </div>
+
+    <div class="products-grid" id="menProductsGrid"></div>
+
+    <div style="text-align:center;margin-top:40px;padding-bottom:20px">
+      <button class="btn btn-outline" onclick="loadMore()"><i class="fas fa-plus"></i> Load More Products</button>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="app.js"></script>
+<script src="components.js"></script>
+<script>
+let activeTab = 'all';
+let visibleCount = 8;
+
+const menProducts = PRODUCTS.filter(p => p.category === 'men');
+
+function setTab(el, tab) {
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  activeTab = tab;
+  visibleCount = 8;
+  filterProducts();
+}
+
+function filterProducts() {
+  let results = activeTab === 'all' ? menProducts : menProducts.filter(p => p.subcategory === activeTab);
+  const q = document.getElementById('shopSearch').value.toLowerCase();
+  if (q) results = results.filter(p => p.name.toLowerCase().includes(q));
+  const sort = document.getElementById('sortSelect').value;
+  if (sort === 'price-asc') results.sort((a,b) => a.price - b.price);
+  else if (sort === 'price-desc') results.sort((a,b) => b.price - a.price);
+  else if (sort === 'rating') results.sort((a,b) => b.rating - a.rating);
+  const shown = results.slice(0, visibleCount);
+  document.getElementById('resultsCount').textContent = `${results.length} products found`;
+  document.getElementById('menProductsGrid').innerHTML = shown.length
+    ? shown.map(p => buildProductCard(p)).join('')
+    : '<div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text-muted)"><i class="fas fa-search" style="font-size:2rem;margin-bottom:16px;display:block"></i>No products found</div>';
+  initWishlistBtns();
+}
+
+function loadMore() { visibleCount += 8; filterProducts(); }
+function clearFilters() { document.querySelectorAll('.filter-check').forEach(c => c.checked = false); filterProducts(); }
+function toggleSize(btn) { btn.classList.toggle('active'); }
+function updatePrice(val) { document.getElementById('priceVal').textContent = `₹${parseInt(val).toLocaleString()}`; }
+function applyFilters() { filterProducts(); document.getElementById('filterSidebar').classList.remove('mobile-open'); showToast('✅','Filters applied'); }
+
+document.addEventListener('DOMContentLoaded', () => {
+  filterProducts();
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('search')) document.getElementById('shopSearch').value = params.get('search');
+  if (params.get('cat')) {
+    const tab = document.querySelector(`[data-tab="${params.get('cat')}"]`);
+    if (tab) setTab(tab, params.get('cat'));
+  }
+  filterProducts();
+});
+</script>
+</body>
+</html>

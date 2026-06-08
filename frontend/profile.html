@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile – ASKR Clothing</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+.profile-layout { display: grid; grid-template-columns: 280px 1fr; gap: 30px; padding: 0 5% 80px; max-width: 1200px; margin: 0 auto; }
+.profile-sidebar { height: fit-content; position: sticky; top: 90px; }
+.profile-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 28px; text-align: center; margin-bottom: 16px; }
+.avatar-wrap { position: relative; width: 90px; height: 90px; margin: 0 auto 16px; }
+.avatar { width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; color: #fff; font-family: 'Montserrat', sans-serif; border: 3px solid rgba(255,107,0,0.3); }
+.avatar-edit { position: absolute; bottom: 2px; right: 2px; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.65rem; color: #fff; }
+.profile-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 4px; }
+.profile-email { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px; }
+.profile-stats { display: flex; justify-content: space-around; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06); }
+.profile-stat-val { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--accent); display: block; }
+.profile-stat-label { font-size: 0.7rem; color: var(--text-muted); }
+.profile-nav { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: hidden; }
+.profile-nav-item { display: flex; align-items: center; gap: 12px; padding: 15px 20px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); transition: all 0.3s; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); }
+.profile-nav-item:last-child { border-bottom: none; }
+.profile-nav-item:hover, .profile-nav-item.active { color: var(--text); background: rgba(255,107,0,0.06); border-left: 3px solid var(--accent); padding-left: 17px; }
+.profile-nav-item i { width: 18px; color: var(--accent); }
+.profile-content { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 30px; }
+.profile-tab { display: none; }
+.profile-tab.active { display: block; }
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.order-row { display: flex; gap: 16px; align-items: center; padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 12px; transition: all 0.3s; }
+.order-row:hover { border-color: rgba(255,107,0,0.2); }
+.order-thumb { width: 60px; height: 72px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+.order-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.order-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+.badge-delivered { background: rgba(46,204,113,0.15); color: #2ecc71; }
+.badge-shipped { background: rgba(52,152,219,0.15); color: #3498db; }
+.badge-processing { background: rgba(255,107,0,0.15); color: var(--accent); }
+.addr-card { border: 1.5px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 18px; margin-bottom: 12px; transition: all 0.3s; }
+.addr-card:hover { border-color: rgba(255,107,0,0.3); }
+@media (max-width:768px) { .profile-layout { grid-template-columns: 1fr; } .profile-sidebar { position: static; } .form-grid-2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+
+<div class="page-header">
+  <h1>My <span style="color:var(--accent)">Account</span></h1>
+  <div class="breadcrumb"><a href="home.html">Home</a><span class="sep">›</span><span>Profile</span></div>
+</div>
+
+<div class="profile-layout">
+  <!-- SIDEBAR -->
+  <div class="profile-sidebar">
+    <div class="profile-card">
+      <div class="avatar-wrap">
+        <div class="avatar" id="userAvatar">A</div>
+        <div class="avatar-edit"><i class="fas fa-camera"></i></div>
+      </div>
+      <div class="profile-name" id="userName">ASKR User</div>
+      <div class="profile-email" id="userEmail">user@email.com</div>
+      <div class="profile-stats">
+        <div class="text-center"><span class="profile-stat-val">12</span><span class="profile-stat-label">Orders</span></div>
+        <div class="text-center"><span class="profile-stat-val">5</span><span class="profile-stat-label">Wishlist</span></div>
+        <div class="text-center"><span class="profile-stat-val">3</span><span class="profile-stat-label">Reviews</span></div>
+      </div>
+    </div>
+    <div class="profile-nav">
+      <div class="profile-nav-item active" onclick="switchTab('personal')"><i class="fas fa-user"></i> Personal Info</div>
+      <div class="profile-nav-item" onclick="switchTab('addresses')"><i class="fas fa-map-marker-alt"></i> Saved Addresses</div>
+      <div class="profile-nav-item" onclick="switchTab('orders')"><i class="fas fa-shopping-bag"></i> Order History</div>
+      <div class="profile-nav-item" onclick="switchTab('password')"><i class="fas fa-lock"></i> Change Password</div>
+      <div class="profile-nav-item" onclick="switchTab('notifications')"><i class="fas fa-bell"></i> Notifications</div>
+      <div class="profile-nav-item" onclick="logout()" style="color:#e74c3c"><i class="fas fa-sign-out-alt" style="color:#e74c3c"></i> Logout</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="profile-content">
+    <!-- PERSONAL INFO -->
+    <div class="profile-tab active" id="tab-personal">
+      <h3 style="font-size:1.1rem;margin-bottom:24px">Personal Information</h3>
+      <form onsubmit="saveProfile(event)">
+        <div class="form-grid-2">
+          <div class="form-group"><label>First Name</label><input type="text" class="form-control" id="firstName" value="Ashwath"></div>
+          <div class="form-group"><label>Last Name</label><input type="text" class="form-control" id="lastName" value="Krishna"></div>
+        </div>
+        <div class="form-group"><label>Email Address</label><div class="input-group"><i class="fas fa-envelope input-icon"></i><input type="email" class="form-control" value="ashwath@email.com"></div></div>
+        <div class="form-group"><label>Mobile Number</label><div class="input-group"><i class="fas fa-phone input-icon"></i><input type="tel" class="form-control" value="+91 98765 43210"></div></div>
+        <div class="form-grid-2">
+          <div class="form-group"><label>Date of Birth</label><input type="date" class="form-control" value="1998-05-15"></div>
+          <div class="form-group"><label>Gender</label>
+            <select class="form-control sort-select" style="width:100%;background:rgba(255,255,255,0.05)">
+              <option style="background:#1a1a1a" selected>Male</option>
+              <option style="background:#1a1a1a">Female</option>
+              <option style="background:#1a1a1a">Other</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+      </form>
+    </div>
+
+    <!-- ADDRESSES -->
+    <div class="profile-tab" id="tab-addresses">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+        <h3 style="font-size:1.1rem">Saved Addresses</h3>
+        <button class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Add New</button>
+      </div>
+      <div class="addr-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <span style="font-size:0.7rem;background:var(--accent);color:#fff;padding:2px 10px;border-radius:10px;font-weight:600">HOME · DEFAULT</span>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline btn-sm"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-outline btn-sm" style="border-color:rgba(231,76,60,0.3);color:#e74c3c"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-weight:600">Ashwath Krishna · +91 98765 43210</div>
+        <div style="color:var(--text-muted);font-size:0.85rem;margin-top:4px;line-height:1.6">123 Main Street, MG Road,<br>Bangalore — 560001, Karnataka</div>
+      </div>
+      <div class="addr-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <span style="font-size:0.7rem;background:rgba(255,255,255,0.1);color:var(--text-muted);padding:2px 10px;border-radius:10px;font-weight:600">WORK</span>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline btn-sm"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-outline btn-sm" style="border-color:rgba(231,76,60,0.3);color:#e74c3c"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-weight:600">Ashwath Krishna · +91 98765 43210</div>
+        <div style="color:var(--text-muted);font-size:0.85rem;margin-top:4px;line-height:1.6">456 Tech Park, Electronic City,<br>Bangalore — 560100, Karnataka</div>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="profile-tab" id="tab-orders">
+      <h3 style="font-size:1.1rem;margin-bottom:24px">Order History</h3>
+      ${['p1','p2','p5'].map((id, i) => {
+        const product = `PRODUCTS.find(p => p.id === '${id}')`;
+        const statuses = ['Delivered','Shipped','Processing'];
+        const dates = ['Mar 15, 2025','Mar 18, 2025','Mar 22, 2025'];
+        const badgeCls = ['badge-delivered','badge-shipped','badge-processing'];
+        const orderIds = ['ASKR12345678','ASKR87654321','ASKR11223344'];
+        return ``;
+      }).join('')}
+      <div id="ordersContent"></div>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="profile-tab" id="tab-password">
+      <h3 style="font-size:1.1rem;margin-bottom:24px">Change Password</h3>
+      <form style="max-width:420px" onsubmit="changePassword(event)">
+        <div class="form-group"><label>Current Password</label><div class="input-group"><i class="fas fa-lock input-icon"></i><input type="password" class="form-control" placeholder="Current password"><button type="button" class="input-toggle" onclick="this.previousElementSibling.type=this.previousElementSibling.type==='password'?'text':'password'"><i class="far fa-eye"></i></button></div></div>
+        <div class="form-group"><label>New Password</label><div class="input-group"><i class="fas fa-lock input-icon"></i><input type="password" class="form-control" placeholder="New password (min 8 chars)"><button type="button" class="input-toggle" onclick="this.previousElementSibling.type=this.previousElementSibling.type==='password'?'text':'password'"><i class="far fa-eye"></i></button></div></div>
+        <div class="form-group"><label>Confirm New Password</label><div class="input-group"><i class="fas fa-lock input-icon"></i><input type="password" class="form-control" placeholder="Confirm new password"></div></div>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-key"></i> Update Password</button>
+      </form>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="profile-tab" id="tab-notifications">
+      <h3 style="font-size:1.1rem;margin-bottom:24px">Notification Preferences</h3>
+      ${[['Order Updates','Get notified about your order status'],['Promotions','Exclusive offers and sale alerts'],['New Arrivals','Be the first to know about new products'],['Account Alerts','Security and account notifications']].map(([t,d],i) => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;border:1px solid rgba(255,255,255,0.06);border-radius:12px;margin-bottom:10px">
+          <div><div style="font-weight:600;font-size:0.88rem">${t}</div><div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">${d}</div></div>
+          <label style="cursor:pointer;display:flex;align-items:center;gap:8px">
+            <input type="checkbox" ${i<2?'checked':''} style="accent-color:var(--accent);width:16px;height:16px">
+          </label>
+        </div>`).join('')}
+      <button class="btn btn-primary btn-sm" style="margin-top:8px" onclick="showToast('✅','Preferences saved!')">Save Preferences</button>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="app.js"></script>
+<script src="components.js"></script>
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.profile-nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`tab-${tab}`).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+function saveProfile(e) {
+  e.preventDefault();
+  const name = document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value;
+  document.getElementById('userName').textContent = name;
+  showToast('✅', 'Profile updated successfully!');
+}
+function changePassword(e) {
+  e.preventDefault();
+  showToast('🔐', 'Password changed successfully!');
+}
+function logout() {
+  if (confirm('Are you sure you want to logout?')) {
+    localStorage.removeItem('askr_user');
+    window.location.href = 'login.html';
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const user = state.user;
+  if (user) {
+    document.getElementById('userName').textContent = user.name || 'ASKR User';
+    document.getElementById('userEmail').textContent = user.email || '';
+    document.getElementById('userAvatar').textContent = (user.name || 'A')[0].toUpperCase();
+  }
+  // Render orders
+  const sampleOrders = [
+    { id:'ASKR12345678', product: PRODUCTS[0], status:'Delivered', date:'Mar 15, 2025', badge:'badge-delivered' },
+    { id:'ASKR87654321', product: PRODUCTS[1], status:'Shipped', date:'Mar 18, 2025', badge:'badge-shipped' },
+    { id:'ASKR11223344', product: PRODUCTS[4], status:'Processing', date:'Mar 22, 2025', badge:'badge-processing' },
+  ];
+  document.getElementById('ordersContent').innerHTML = sampleOrders.map(o => `
+    <div class="order-row">
+      <div class="order-thumb"><img src="${o.product.image}" alt="${o.product.name}"></div>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:0.88rem">${o.product.name}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin:4px 0">Order #${o.id} · ${o.date}</div>
+        <span class="order-badge ${o.badge}">${o.status}</span>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:Montserrat;font-weight:800;color:var(--accent)">₹${o.product.price.toLocaleString()}</div>
+        <a href="tracking.html" class="btn btn-outline btn-sm" style="margin-top:8px"><i class="fas fa-map-marker-alt"></i> Track</a>
+      </div>
+    </div>`).join('');
+});
+</script>
+</body>
+</html>

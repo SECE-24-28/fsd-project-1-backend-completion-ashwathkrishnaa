@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventory – ASKR Admin</title>
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body data-title="Inventory" data-breadcrumb="Inventory">
+<div class="admin-wrapper">
+  <div id="sidebar-placeholder"></div>
+  <div class="main-content" id="mainContent">
+    <div id="header-placeholder"></div>
+    <div class="page-content">
+
+      <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px">
+        <div class="stat-card green"><div><div class="stat-label">In Stock</div><div class="stat-value">286</div></div><div class="stat-icon green"><i class="fas fa-check-circle"></i></div></div>
+        <div class="stat-card gold"><div><div class="stat-label">Low Stock (≤30)</div><div class="stat-value">18</div></div><div class="stat-icon gold"><i class="fas fa-exclamation-circle"></i></div></div>
+        <div class="stat-card orange"><div><div class="stat-label">Out of Stock</div><div class="stat-value">8</div></div><div class="stat-icon orange"><i class="fas fa-times-circle"></i></div></div>
+        <div class="stat-card blue"><div><div class="stat-label">Total Units</div><div class="stat-value">12,480</div></div><div class="stat-icon blue"><i class="fas fa-boxes"></i></div></div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3>Stock Management</h3>
+          <div style="display:flex;gap:10px">
+            <select class="form-control" id="invFilter" style="width:auto;padding:7px 12px;font-size:0.82rem" onchange="renderInventory()">
+              <option value="">All Stock</option>
+              <option value="low">Low Stock</option>
+              <option value="out">Out of Stock</option>
+              <option value="in">In Stock</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="showToast('📦','Restocking alerts sent to supplier','success')"><i class="fas fa-bell"></i> Alert Supplier</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="admin-table" id="inventoryTable"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESTOCK MODAL -->
+<div class="modal-overlay" id="restockModal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <h3>Update Stock — <span id="restockName" style="color:var(--accent)"></span></h3>
+      <button class="modal-close" onclick="closeModal('restockModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Current Stock</label><input type="number" class="form-control" id="currentStock" readonly style="opacity:0.5"></div>
+      <div class="form-group"><label class="form-label">Add Units</label><input type="number" class="form-control" id="addUnits" placeholder="Enter units to add" min="1"></div>
+      <div class="form-group"><label class="form-label">New Total</label><input type="number" class="form-control" id="newTotal" readonly style="opacity:0.5"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="saveRestock()"><i class="fas fa-save"></i> Update Stock</button>
+      <button class="btn btn-outline" onclick="closeModal('restockModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+<script src="admin-components.js"></script>
+<script>
+let currentRestockProduct = null;
+const inventory = SAMPLE_PRODUCTS.map(p => ({ ...p }));
+
+function renderInventory() {
+  const filter = document.getElementById('invFilter').value;
+  const filtered = inventory.filter(p => {
+    if (filter === 'low')  return p.stock > 0 && p.stock <= 30;
+    if (filter === 'out')  return p.stock === 0;
+    if (filter === 'in')   return p.stock > 30;
+    return true;
+  });
+
+  document.getElementById('inventoryTable').innerHTML = `
+    <thead><tr>
+      <th>Product</th><th>Category</th><th>Price</th><th>Stock</th>
+      <th>Stock Level</th><th>Status</th><th>Actions</th>
+    </tr></thead>
+    <tbody>${filtered.map(p => {
+      const pct = Math.min(100, (p.stock / 150) * 100);
+      const color = p.stock === 0 ? 'var(--red)' : p.stock <= 30 ? '#f1c40f' : 'var(--green)';
+      return `<tr>
+        <td><div style="display:flex;gap:12px;align-items:center">
+          <div class="product-thumb"><img src="${p.image}" alt="${p.name}"></div>
+          <div><div style="font-weight:600;font-size:0.84rem">${p.name}</div><div style="font-size:0.72rem;color:var(--text-muted)">SKU: ASKR-${p.id.toUpperCase()}</div></div>
+        </div></td>
+        <td style="font-size:0.82rem;color:var(--text-muted)">${p.category} › ${p.subcategory}</td>
+        <td style="font-weight:700">₹${p.price.toLocaleString()}</td>
+        <td><span style="font-weight:700;font-size:1rem;color:${color}">${p.stock}</span> <span style="font-size:0.72rem;color:var(--text-muted)">units</span></td>
+        <td style="min-width:120px">
+          <div class="progress"><div class="progress-bar" style="width:${pct}%;background:${color}"></div></div>
+        </td>
+        <td>${p.stock===0?statusBadge('out_of_stock'):p.stock<=30?'<span class="badge badge-warning">Low Stock</span>':statusBadge('active')}</td>
+        <td><button class="btn btn-primary btn-xs" onclick="openRestock('${p.id}')"><i class="fas fa-plus"></i> Restock</button></td>
+      </tr>`;
+    }).join('')}
+    </tbody>`;
+}
+
+function openRestock(id) {
+  currentRestockProduct = inventory.find(p => p.id === id);
+  if (!currentRestockProduct) return;
+  document.getElementById('restockName').textContent = currentRestockProduct.name;
+  document.getElementById('currentStock').value = currentRestockProduct.stock;
+  document.getElementById('addUnits').value = '';
+  document.getElementById('newTotal').value = currentRestockProduct.stock;
+  document.getElementById('addUnits').oninput = (e) => {
+    document.getElementById('newTotal').value = currentRestockProduct.stock + (+e.target.value || 0);
+  };
+  openModal('restockModal');
+}
+
+function saveRestock() {
+  const add = +document.getElementById('addUnits').value;
+  if (!add || add < 1) { alert('Please enter valid units'); return; }
+  currentRestockProduct.stock += add;
+  closeModal('restockModal');
+  renderInventory();
+  showToast('📦', `Stock updated: +${add} units added`, 'success');
+}
+
+document.addEventListener('DOMContentLoaded', renderInventory);
+</script>
+</body>
+</html>

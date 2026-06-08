@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product – ASKR Clothing</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+.product-detail-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding: 30px 5% 80px; padding-top: 100px; max-width: 1400px; margin: 0 auto; }
+.product-gallery { position: sticky; top: 90px; height: fit-content; }
+.main-image { border-radius: 16px; overflow: hidden; aspect-ratio: 3/4; background: var(--secondary); position: relative; cursor: zoom-in; }
+.main-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.main-image:hover img { transform: scale(1.1); }
+.thumb-row { display: flex; gap: 10px; margin-top: 14px; }
+.thumb { width: 70px; height: 85px; border-radius: 8px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; flex-shrink: 0; }
+.thumb:hover, .thumb.active { border-color: var(--accent); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.product-info-col { padding-top: 10px; }
+.product-detail-brand { font-size: 0.75rem; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+.product-detail-name { font-size: clamp(1.4rem,3vw,2rem); font-weight: 800; line-height: 1.2; margin-bottom: 14px; }
+.product-detail-rating { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.product-detail-rating .stars { color: var(--gold); font-size: 1rem; }
+.review-count { color: var(--text-muted); font-size: 0.85rem; }
+.product-detail-price { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+.detail-price-current { font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 900; color: var(--accent); }
+.detail-price-original { font-size: 1.1rem; color: var(--text-muted); text-decoration: line-through; }
+.detail-discount { background: rgba(46,204,113,0.12); color: #2ecc71; border: 1px solid rgba(46,204,113,0.25); border-radius: 6px; padding: 4px 10px; font-size: 0.8rem; font-weight: 700; }
+.detail-section { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.detail-section:last-child { border-bottom: none; }
+.detail-section-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+.size-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.size-option { width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.15); color: var(--text-muted); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+.size-option:hover, .size-option.active { border-color: var(--accent); color: var(--accent); background: rgba(255,107,0,0.08); }
+.size-option.unavailable { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
+.color-options { display: flex; gap: 10px; flex-wrap: wrap; }
+.color-option { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.3s; position: relative; }
+.color-option:hover, .color-option.active { border-color: var(--accent); transform: scale(1.1); }
+.color-option.active::after { content: '✓'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.7rem; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+.qty-selector { display: flex; align-items: center; gap: 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; width: fit-content; }
+.qty-btn { width: 42px; height: 42px; background: none; border: none; color: var(--text); font-size: 1.2rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+.qty-btn:hover { color: var(--accent); }
+.qty-num { min-width: 40px; text-align: center; font-size: 0.95rem; font-weight: 700; color: var(--text); }
+.action-btns { display: flex; gap: 12px; margin-top: 28px; }
+.product-meta { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+.meta-row { display: flex; align-items: center; gap: 12px; font-size: 0.82rem; color: var(--text-muted); }
+.meta-row i { color: var(--accent); width: 16px; }
+
+/* Reviews section */
+.reviews-section { padding: 60px 5%; max-width: 1400px; margin: 0 auto; }
+.review-summary { display: flex; gap: 40px; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 30px; margin-bottom: 30px; align-items: center; }
+.review-avg { text-align: center; }
+.review-avg-num { font-family: 'Montserrat', sans-serif; font-size: 3.5rem; font-weight: 900; color: var(--accent); line-height: 1; }
+.review-bars { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.review-bar-row { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; }
+.review-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+.review-bar-fill { height: 100%; background: var(--gold); border-radius: 3px; transition: width 1s ease; }
+.review-cards { display: flex; flex-direction: column; gap: 16px; }
+.review-item { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 22px; }
+.reviewer-info { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
+.reviewer-av { width: 42px; height: 42px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; }
+.reviewer-date { font-size: 0.72rem; color: var(--text-muted); }
+
+.related-section { padding: 0 5% 80px; max-width: 1400px; margin: 0 auto; }
+
+@media (max-width: 900px) { .product-detail-layout { grid-template-columns: 1fr; } .product-gallery { position: static; } }
+@media (max-width: 768px) { .review-summary { flex-direction: column; } .action-btns { flex-direction: column; } }
+</style>
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+
+<div class="product-detail-layout" id="productLayout">
+  <!-- Will be populated by JS -->
+</div>
+
+<div class="reviews-section">
+  <h2 class="section-title" style="margin-bottom:30px">Customer <span>Reviews</span></h2>
+  <div class="review-summary">
+    <div class="review-avg">
+      <div class="review-avg-num" id="avgRating">4.5</div>
+      <div style="color:var(--gold);font-size:1.1rem">★★★★½</div>
+      <div style="color:var(--text-muted);font-size:0.8rem;margin-top:4px">128 reviews</div>
+    </div>
+    <div class="review-bars">
+      <div class="review-bar-row"><span style="color:var(--text-muted);width:30px">5★</span><div class="review-bar"><div class="review-bar-fill" style="width:72%"></div></div><span style="color:var(--text-muted)">72%</span></div>
+      <div class="review-bar-row"><span style="color:var(--text-muted);width:30px">4★</span><div class="review-bar"><div class="review-bar-fill" style="width:18%"></div></div><span style="color:var(--text-muted)">18%</span></div>
+      <div class="review-bar-row"><span style="color:var(--text-muted);width:30px">3★</span><div class="review-bar"><div class="review-bar-fill" style="width:6%;background:var(--text-muted)"></div></div><span style="color:var(--text-muted)">6%</span></div>
+      <div class="review-bar-row"><span style="color:var(--text-muted);width:30px">2★</span><div class="review-bar"><div class="review-bar-fill" style="width:2%;background:#e74c3c"></div></div><span style="color:var(--text-muted)">2%</span></div>
+      <div class="review-bar-row"><span style="color:var(--text-muted);width:30px">1★</span><div class="review-bar"><div class="review-bar-fill" style="width:2%;background:#e74c3c"></div></div><span style="color:var(--text-muted)">2%</span></div>
+    </div>
+  </div>
+  <div class="review-cards" id="reviewCards"></div>
+</div>
+
+<div class="related-section">
+  <div class="section-header">
+    <h2 class="section-title">You May Also <span>Like</span></h2>
+  </div>
+  <div class="products-grid" id="relatedGrid"></div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="app.js"></script>
+<script src="components.js"></script>
+<script>
+const reviews = [
+  { name:'Karan M', avatar:'K', stars:5, date:'2 days ago', text:'Exceptional quality! The fabric feels premium and the fit is exactly as described. Fast delivery too!', verified:true },
+  { name:'Sneha R', avatar:'S', date:'1 week ago', stars:5, text:'Love this! Perfect for both casual and semi-formal occasions. Got so many compliments.', verified:true },
+  { name:'Vikram S', avatar:'V', date:'2 weeks ago', stars:4, text:'Good product. Sizing is slightly on the larger side, suggest going one size down. Overall happy!', verified:true },
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get('id') || 'p1';
+  const product = PRODUCTS.find(p => p.id === productId) || PRODUCTS[0];
+
+  // Build product layout
+  const images = [product.image, ...PRODUCTS.filter(p=>p.id!==product.id).slice(0,3).map(p=>p.image)];
+  document.getElementById('productLayout').innerHTML = `
+    <div class="product-gallery">
+      <div class="main-image" id="mainImg"><img src="${product.image}" alt="${product.name}" id="mainImgEl"></div>
+      <div class="thumb-row">
+        ${images.map((img,i) => `<div class="thumb ${i===0?'active':''}" onclick="setMainImg('${img}',this)"><img src="${img}" alt=""></div>`).join('')}
+      </div>
+    </div>
+    <div class="product-info-col">
+      <div class="breadcrumb">
+        <a href="home.html">Home</a><span class="sep">›</span>
+        <a href="men.html">Men</a><span class="sep">›</span>
+        <span style="color:var(--text)">${product.name}</span>
+      </div>
+      <div style="margin-top:20px"></div>
+      <div class="product-detail-brand">ASKR Clothing</div>
+      <h1 class="product-detail-name">${product.name}</h1>
+      <div class="product-detail-rating">
+        <span class="stars">${renderStars(product.rating)}</span>
+        <span class="review-count">${product.rating} (${product.reviews} reviews)</span>
+        <span style="color:var(--text-muted);font-size:0.8rem">|</span>
+        <span style="color:#2ecc71;font-size:0.8rem"><i class="fas fa-check-circle"></i> In Stock</span>
+      </div>
+      <div class="product-detail-price">
+        <span class="detail-price-current">₹${product.price.toLocaleString()}</span>
+        ${product.originalPrice ? `<span class="detail-price-original">₹${product.originalPrice.toLocaleString()}</span>` : ''}
+        ${product.originalPrice ? `<span class="detail-discount">${Math.round((1-product.price/product.originalPrice)*100)}% OFF</span>` : ''}
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">Select Size <span style="color:var(--accent);cursor:pointer;text-decoration:underline;font-size:0.7rem" onclick="showToast('📏','Size chart: XS=34, S=36, M=38, L=40, XL=42')">Size Guide</span></div>
+        <div class="size-options">
+          ${product.sizes.map((s,i) => `<div class="size-option ${i===1?'active':''}" onclick="selectSize(this,'${s}')">${s}</div>`).join('')}
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">Select Color</div>
+        <div class="color-options">
+          ${product.colors.map((c,i) => `<div class="color-option ${i===0?'active':''}" style="background:${c}" onclick="selectColor(this)" title="${c}"></div>`).join('')}
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">Quantity</div>
+        <div class="qty-selector">
+          <button class="qty-btn" onclick="changeQty(-1)"><i class="fas fa-minus"></i></button>
+          <span class="qty-num" id="qtyNum">1</span>
+          <button class="qty-btn" onclick="changeQty(1)"><i class="fas fa-plus"></i></button>
+        </div>
+      </div>
+      <div class="action-btns">
+        <button class="btn btn-primary btn-lg" style="flex:1" onclick="handleAddToCart()">
+          <i class="fas fa-shopping-bag"></i> Add to Cart
+        </button>
+        <button class="btn btn-gold btn-lg" style="flex:1" onclick="handleBuyNow()">
+          <i class="fas fa-bolt"></i> Buy Now
+        </button>
+        <button class="btn btn-outline" id="wishBtn" onclick="toggleWishBtn()" style="min-width:52px">
+          <i class="${isWishlisted(product.id)?'fas':'far'} fa-heart"></i>
+        </button>
+      </div>
+      <div class="product-meta">
+        <div class="meta-row"><i class="fas fa-shipping-fast"></i> Free delivery on orders above ₹999</div>
+        <div class="meta-row"><i class="fas fa-undo"></i> 30-day hassle-free returns</div>
+        <div class="meta-row"><i class="fas fa-shield-alt"></i> 100% genuine product guaranteed</div>
+        <div class="meta-row"><i class="fas fa-tag"></i> SKU: ASKR-${product.id.toUpperCase()}-2025</div>
+      </div>
+    </div>`;
+
+  // Reviews
+  document.getElementById('avgRating').textContent = product.rating;
+  document.getElementById('reviewCards').innerHTML = reviews.map(r => `
+    <div class="review-item">
+      <div class="reviewer-info">
+        <div class="reviewer-av">${r.avatar}</div>
+        <div>
+          <div style="font-weight:600;font-size:0.9rem">${r.name} ${r.verified ? '<span style="color:var(--accent);font-size:0.72rem">✓ Verified</span>' : ''}</div>
+          <div class="reviewer-date">${r.date}</div>
+        </div>
+        <div style="margin-left:auto;color:var(--gold);font-size:0.9rem">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+      </div>
+      <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7">${r.text}</p>
+    </div>`).join('');
+
+  // Related products
+  const related = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
+  document.getElementById('relatedGrid').innerHTML = related.map(p => buildProductCard(p)).join('');
+  initWishlistBtns();
+
+  window._currentProduct = product;
+  window._selectedSize = product.sizes[1] || product.sizes[0];
+  window._qty = 1;
+});
+
+function setMainImg(src, el) {
+  document.getElementById('mainImgEl').src = src;
+  document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function selectSize(el, size) {
+  document.querySelectorAll('.size-option').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  window._selectedSize = size;
+}
+function selectColor(el) {
+  document.querySelectorAll('.color-option').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+function changeQty(d) {
+  window._qty = Math.max(1, Math.min(10, (window._qty || 1) + d));
+  document.getElementById('qtyNum').textContent = window._qty;
+}
+function handleAddToCart() {
+  if (!window._currentProduct) return;
+  for (let i = 0; i < window._qty; i++) addToCart({ ...window._currentProduct, size: window._selectedSize });
+  showToast('🛒', 'Added to cart!');
+}
+function handleBuyNow() {
+  handleAddToCart();
+  setTimeout(() => window.location.href = 'cart.html', 500);
+}
+function toggleWishBtn() {
+  const p = window._currentProduct;
+  if (!p) return;
+  const added = toggleWishlist(p);
+  document.getElementById('wishBtn').innerHTML = `<i class="${added?'fas':'far'} fa-heart"></i>`;
+}
+</script>
+</body>
+</html>

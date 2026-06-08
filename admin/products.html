@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products – ASKR Admin</title>
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+.product-grid-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; padding: 22px; }
+.admin-product-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; overflow: hidden; transition: all 0.3s; }
+.admin-product-card:hover { border-color: rgba(255,107,0,0.3); transform: translateY(-3px); }
+.admin-product-img { aspect-ratio: 3/4; overflow: hidden; position: relative; }
+.admin-product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.admin-product-card:hover img { transform: scale(1.06); }
+.admin-product-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); opacity: 0; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.admin-product-card:hover .admin-product-overlay { opacity: 1; }
+.admin-product-info { padding: 14px; }
+.img-upload-area { border: 2px dashed rgba(255,107,0,0.3); border-radius: 12px; padding: 30px; text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(255,107,0,0.03); }
+.img-upload-area:hover { border-color: var(--accent); background: rgba(255,107,0,0.06); }
+</style>
+</head>
+<body data-title="Products" data-breadcrumb="Products">
+<div class="admin-wrapper">
+  <div id="sidebar-placeholder"></div>
+  <div class="main-content" id="mainContent">
+    <div id="header-placeholder"></div>
+    <div class="page-content">
+
+      <!-- HEADER -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+        <div>
+          <h2 style="font-size:1.1rem;font-weight:700">Product Catalogue</h2>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-top:2px">Manage your entire product inventory</p>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-outline btn-sm"><i class="fas fa-download"></i> Export</button>
+          <button class="btn btn-outline btn-sm"><i class="fas fa-upload"></i> Import</button>
+          <button class="btn btn-primary" onclick="openModal('addProductModal')"><i class="fas fa-plus"></i> Add Product</button>
+        </div>
+      </div>
+
+      <!-- FILTERS -->
+      <div class="admin-card" style="margin-bottom:20px">
+        <div class="admin-card-body" style="padding:16px 22px">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+            <div style="flex:1;min-width:200px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px 14px">
+              <i class="fas fa-search" style="color:var(--text-muted);font-size:0.8rem"></i>
+              <input type="text" id="productSearch" placeholder="Search products..." style="background:none;border:none;color:var(--text);font-size:0.83rem;outline:none;width:100%" oninput="renderProducts()">
+            </div>
+            <select class="form-control" id="catFilter" style="width:auto;padding:8px 12px;font-size:0.82rem" onchange="renderProducts()">
+              <option value="">All Categories</option>
+              <option value="Men">Men</option>
+              <option value="Women">Women</option>
+              <option value="Kids">Kids</option>
+            </select>
+            <select class="form-control" id="stockFilter" style="width:auto;padding:8px 12px;font-size:0.82rem" onchange="renderProducts()">
+              <option value="">All Stock</option>
+              <option value="in_stock">In Stock</option>
+              <option value="low_stock">Low Stock</option>
+              <option value="out_of_stock">Out of Stock</option>
+            </select>
+            <div style="display:flex;gap:4px">
+              <button class="btn btn-outline btn-sm" id="listViewBtn" onclick="setView('list')"><i class="fas fa-list"></i></button>
+              <button class="btn btn-primary btn-sm"  id="gridViewBtn" onclick="setView('grid')"><i class="fas fa-th"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS TABLE -->
+      <div class="admin-card" id="productListView">
+        <div style="overflow-x:auto">
+          <table class="admin-table" id="productsTable"></table>
+        </div>
+        <div style="padding:14px 22px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:0.8rem;color:var(--text-muted)" id="productCount"></span>
+          <button class="btn btn-outline btn-sm" onclick="loadMoreProducts()"><i class="fas fa-plus"></i> Load More</button>
+        </div>
+      </div>
+
+      <!-- PRODUCTS GRID -->
+      <div id="productGridView" style="display:none">
+        <div class="product-grid-view" id="productsGrid"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT PRODUCT MODAL -->
+<div class="modal-overlay" id="addProductModal">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header">
+      <h3 id="productModalTitle">Add New Product</h3>
+      <button class="modal-close" onclick="closeModal('addProductModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid-2">
+        <div class="form-group"><label class="form-label">Product Name *</label><input type="text" class="form-control" id="pName" placeholder="e.g. Premium Oversized Tee" required></div>
+        <div class="form-group"><label class="form-label">Category *</label>
+          <select class="form-control" id="pCategory" onchange="updateSubcats()">
+            <option value="">Select Category</option>
+            <option>Men</option><option>Women</option><option>Kids</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-group"><label class="form-label">Subcategory</label>
+          <select class="form-control" id="pSubcategory"><option value="">Select Subcategory</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Badge</label>
+          <select class="form-control" id="pBadge">
+            <option value="">None</option><option value="new">New</option>
+            <option value="bestseller">Bestseller</option><option value="sale">Sale</option><option value="premium">Premium</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid-3">
+        <div class="form-group"><label class="form-label">Sale Price (₹) *</label><div class="input-group"><span class="input-prefix">₹</span><input type="number" class="form-control" id="pPrice" placeholder="999"></div></div>
+        <div class="form-group"><label class="form-label">Original Price (₹)</label><div class="input-group"><span class="input-prefix">₹</span><input type="number" class="form-control" id="pOriginal" placeholder="1499"></div></div>
+        <div class="form-group"><label class="form-label">Stock Qty *</label><input type="number" class="form-control" id="pStock" placeholder="100"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" id="pDesc" rows="3" placeholder="Product description..."></textarea></div>
+      <div class="form-grid-2">
+        <div class="form-group"><label class="form-label">Available Sizes</label><input type="text" class="form-control" id="pSizes" placeholder="XS, S, M, L, XL, XXL"></div>
+        <div class="form-group"><label class="form-label">Image URL</label><input type="text" class="form-control" id="pImage" placeholder="https://..."></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Or Upload Image</label>
+        <div class="img-upload-area" onclick="document.getElementById('imgFile').click()">
+          <i class="fas fa-cloud-upload-alt" style="font-size:1.8rem;color:var(--accent);margin-bottom:8px;display:block"></i>
+          <div style="font-size:0.83rem;color:var(--text-muted)">Click to upload or drag & drop</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">PNG, JPG up to 5MB</div>
+          <input type="file" id="imgFile" accept="image/*" style="display:none">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="saveProduct()"><i class="fas fa-save"></i> Save Product</button>
+      <button class="btn btn-outline" onclick="closeModal('addProductModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+<script src="admin-components.js"></script>
+<script>
+const subcats = { Men:['Shirts','T-Shirts','Jeans','Hoodies','Jackets'], Women:['Sarees','Kurtis','Dresses','Tops','Jeans'], Kids:['Boys Wear','Girls Wear','Infant Wear'] };
+let products = [...SAMPLE_PRODUCTS];
+let viewMode = 'list';
+let visibleCount = 8;
+
+function updateSubcats() {
+  const cat = document.getElementById('pCategory').value;
+  const sel = document.getElementById('pSubcategory');
+  sel.innerHTML = '<option value="">Select Subcategory</option>' + (subcats[cat]||[]).map(s=>`<option>${s}</option>`).join('');
+}
+
+function setView(mode) {
+  viewMode = mode;
+  document.getElementById('productListView').style.display = mode === 'list' ? 'block' : 'none';
+  document.getElementById('productGridView').style.display = mode === 'grid' ? 'block' : 'none';
+  document.getElementById('listViewBtn').className = `btn ${mode==='list'?'btn-primary':'btn-outline'} btn-sm`;
+  document.getElementById('gridViewBtn').className = `btn ${mode==='grid'?'btn-primary':'btn-outline'} btn-sm`;
+  renderProducts();
+}
+
+function getFiltered() {
+  const q = document.getElementById('productSearch').value.toLowerCase();
+  const cat = document.getElementById('catFilter').value;
+  const stk = document.getElementById('stockFilter').value;
+  return products.filter(p => {
+    const mQ = !q || p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q);
+    const mCat = !cat || p.category === cat;
+    const mStk = !stk || (stk==='in_stock'&&p.stock>30) || (stk==='low_stock'&&p.stock>0&&p.stock<=30) || (stk==='out_of_stock'&&p.stock===0);
+    return mQ && mCat && mStk;
+  });
+}
+
+function renderProducts() {
+  const filtered = getFiltered().slice(0, visibleCount);
+  document.getElementById('productCount').textContent = `${filtered.length} of ${getFiltered().length} products`;
+
+  // List view
+  document.getElementById('productsTable').innerHTML = `
+    <thead><tr>
+      <th><input type="checkbox" style="accent-color:var(--accent)"></th>
+      <th>Product</th><th>Category</th><th>Price</th><th>Original</th>
+      <th>Stock</th><th>Sales</th><th>Status</th><th>Actions</th>
+    </tr></thead>
+    <tbody>${filtered.map(p => `
+      <tr>
+        <td><input type="checkbox" style="accent-color:var(--accent)"></td>
+        <td><div style="display:flex;gap:12px;align-items:center">
+          <div class="product-thumb"><img src="${p.image}" alt="${p.name}"></div>
+          <div><div style="font-weight:600;font-size:0.84rem">${p.name}</div><div style="font-size:0.72rem;color:var(--text-muted)">ID: ${p.id}</div></div>
+        </div></td>
+        <td><div style="font-size:0.8rem">${p.category}</div><div style="font-size:0.72rem;color:var(--text-muted)">${p.subcategory}</div></td>
+        <td style="font-weight:700;color:var(--accent)">₹${p.price.toLocaleString()}</td>
+        <td style="color:var(--text-muted);text-decoration:line-through;font-size:0.82rem">${p.originalPrice?'₹'+p.originalPrice.toLocaleString():'-'}</td>
+        <td><span style="color:${p.stock===0?'var(--red)':p.stock<30?'#f1c40f':'var(--green)';};font-weight:600">${p.stock===0?'Out of Stock':p.stock+' units'}</span></td>
+        <td><span class="badge badge-muted">${p.sales} sold</span></td>
+        <td>${statusBadge(p.status)}</td>
+        <td><div style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-xs" onclick="editProduct('${p.id}')"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-danger btn-xs" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash"></i></button>
+        </div></td>
+      </tr>`).join('')}
+    </tbody>`;
+
+  // Grid view
+  document.getElementById('productsGrid').innerHTML = filtered.map(p => `
+    <div class="admin-product-card">
+      <div class="admin-product-img">
+        <img src="${p.image}" alt="${p.name}">
+        <div class="admin-product-overlay">
+          <button class="btn btn-primary btn-sm" onclick="editProduct('${p.id}')"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-danger btn-sm"  onclick="deleteProduct('${p.id}')"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+      <div class="admin-product-info">
+        <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:3px">${p.category} › ${p.subcategory}</div>
+        <div style="font-weight:600;font-size:0.84rem;margin-bottom:6px">${p.name}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-weight:800;color:var(--accent)">₹${p.price.toLocaleString()}</span>
+          ${statusBadge(p.status)}
+        </div>
+        <div style="font-size:0.72rem;color:${p.stock===0?'var(--red)':'var(--text-muted)'};margin-top:6px">
+          ${p.stock===0?'⚠ Out of Stock':'Stock: '+p.stock}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function loadMoreProducts() { visibleCount += 8; renderProducts(); }
+
+function editProduct(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('productModalTitle').textContent = 'Edit Product';
+  document.getElementById('pName').value = p.name;
+  document.getElementById('pCategory').value = p.category;
+  updateSubcats();
+  document.getElementById('pSubcategory').value = p.subcategory;
+  document.getElementById('pPrice').value = p.price;
+  document.getElementById('pStock').value = p.stock;
+  document.getElementById('pImage').value = p.image;
+  openModal('addProductModal');
+}
+
+function deleteProduct(id) {
+  confirmDelete(`Delete product?`, () => {
+    products = products.filter(p => p.id !== id);
+    renderProducts();
+    showToast('🗑️','Product deleted','error');
+  });
+}
+
+function saveProduct() {
+  const name = document.getElementById('pName').value.trim();
+  if (!name) { alert('Product name is required'); return; }
+  const newP = {
+    id: 'p' + Date.now(), name,
+    category: document.getElementById('pCategory').value || 'Men',
+    subcategory: document.getElementById('pSubcategory').value || 'T-Shirts',
+    price: +document.getElementById('pPrice').value || 999,
+    originalPrice: +document.getElementById('pOriginal').value || 0,
+    stock: +document.getElementById('pStock').value || 0,
+    status: 'active', sales: 0,
+    image: document.getElementById('pImage').value || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=80&q=60'
+  };
+  products.unshift(newP);
+  closeModal('addProductModal');
+  renderProducts();
+  showToast('✅','Product saved successfully','success');
+}
+
+document.addEventListener('DOMContentLoaded', () => renderProducts());
+</script>
+</body>
+</html>

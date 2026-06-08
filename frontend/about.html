@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us – ASKR Clothing</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+.about-hero { min-height: 50vh; display: flex; align-items: center; position: relative; overflow: hidden; padding: 100px 5% 60px; }
+.about-hero-bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1400&q=80') center/cover; opacity: 0.1; }
+.about-hero-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(255,107,0,0.06) 0%, transparent 70%); }
+.story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.story-image { border-radius: 20px; overflow: hidden; aspect-ratio: 4/5; }
+.story-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.story-image:hover img { transform: scale(1.04); }
+.story-label { font-size: 0.75rem; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.story-label::before { content: ''; display: inline-block; width: 30px; height: 2px; background: var(--accent); }
+.values-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
+.value-item { display: flex; gap: 14px; align-items: flex-start; }
+.value-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,107,0,0.1); border: 1px solid rgba(255,107,0,0.2); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; font-size: 0.9rem; }
+.value-title { font-weight: 700; font-size: 0.88rem; margin-bottom: 4px; }
+.value-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
+.mvv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.mvv-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 32px 24px; text-align: center; transition: all 0.3s; position: relative; overflow: hidden; }
+.mvv-card::before { content: ''; position: absolute; bottom: -30px; right: -30px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,107,0,0.08) 0%, transparent 70%); }
+.mvv-card:hover { transform: translateY(-6px); border-color: rgba(255,107,0,0.3); }
+.mvv-icon { font-size: 2rem; color: var(--accent); margin-bottom: 16px; display: block; }
+.mvv-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; }
+.mvv-text { color: var(--text-muted); font-size: 0.85rem; line-height: 1.8; }
+@media (max-width:768px) { .story-grid { grid-template-columns: 1fr; } .mvv-grid { grid-template-columns: 1fr; } .values-grid { grid-template-columns: 1fr; } }
+@media (max-width:900px) { .mvv-grid { grid-template-columns: repeat(2,1fr); } }
+</style>
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+
+<!-- HERO -->
+<div class="about-hero">
+  <div class="about-hero-bg"></div>
+  <div class="about-hero-overlay"></div>
+  <div style="position:relative;z-index:2;max-width:700px">
+    <div class="story-label">Our Story</div>
+    <h1 style="font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1.1;margin-bottom:20px">We Are <span style="color:var(--accent)">ASKR</span><br>Clothing</h1>
+    <p style="color:var(--text-muted);font-size:1rem;line-height:1.8;max-width:520px">Born from a passion for premium fashion and a belief that style is a language everyone should speak fluently. Since 2020, we've been redefining what it means to dress with confidence.</p>
+  </div>
+</div>
+
+<!-- STORY -->
+<section class="section">
+  <div class="story-grid">
+    <div class="story-image" data-animate>
+      <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80" alt="ASKR Story">
+    </div>
+    <div data-animate>
+      <div class="story-label">The Beginning</div>
+      <h2 class="section-title" style="text-align:left;margin-bottom:20px">From a Dream to a <span>Movement</span></h2>
+      <p style="color:var(--text-muted);line-height:1.9;font-size:0.9rem;margin-bottom:16px">ASKR Clothing was founded in 2020 by a group of fashion enthusiasts who believed that premium quality clothing shouldn't be a luxury for the few — it should be accessible to everyone who dares to be bold.</p>
+      <p style="color:var(--text-muted);line-height:1.9;font-size:0.9rem;margin-bottom:24px">Starting from a small studio in Bangalore, we've grown into a nationwide brand serving over 50,000 customers across 500+ cities in India. Our Black and Orange identity isn't just colors — it's a statement: bold, confident, and unapologetically premium.</p>
+      <div class="values-grid">
+        <div class="value-item"><div class="value-icon"><i class="fas fa-star"></i></div><div><div class="value-title">Quality First</div><div class="value-desc">No compromise on fabric, finish, or fit</div></div></div>
+        <div class="value-item"><div class="value-icon"><i class="fas fa-heart"></i></div><div><div class="value-title">Customer Love</div><div class="value-desc">Every decision starts with our customers</div></div></div>
+        <div class="value-item"><div class="value-icon"><i class="fas fa-leaf"></i></div><div><div class="value-title">Sustainable</div><div class="value-desc">Eco-conscious production practices</div></div></div>
+        <div class="value-item"><div class="value-icon"><i class="fas fa-lightbulb"></i></div><div><div class="value-title">Innovation</div><div class="value-desc">Always pushing fashion boundaries</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION VISION VALUES -->
+<section class="section" style="padding-top:0;background:var(--secondary)">
+  <div class="section-header" data-animate>
+    <h2 class="section-title">Our <span>Foundation</span></h2>
+    <p class="section-subtitle">The principles that drive everything we do</p>
+  </div>
+  <div class="mvv-grid">
+    <div class="mvv-card" data-animate>
+      <span class="mvv-icon"><i class="fas fa-bullseye"></i></span>
+      <div class="mvv-title">Our Mission</div>
+      <p class="mvv-text">To democratize premium fashion by delivering luxury-quality clothing at accessible price points, empowering every individual to express their unique identity with confidence.</p>
+    </div>
+    <div class="mvv-card" data-animate>
+      <span class="mvv-icon"><i class="fas fa-eye"></i></span>
+      <div class="mvv-title">Our Vision</div>
+      <p class="mvv-text">To become India's most trusted and loved premium fashion brand — a household name synonymous with quality, style, and impeccable customer experience.</p>
+    </div>
+    <div class="mvv-card" data-animate>
+      <span class="mvv-icon"><i class="fas fa-heart"></i></span>
+      <div class="mvv-title">Core Values</div>
+      <p class="mvv-text">Integrity in everything we do. Quality without compromise. Innovation that matters. Sustainability for tomorrow. And above all, genuine love for our customers and community.</p>
+    </div>
+  </div>
+</section>
+
+
+
+<div id="footer-placeholder"></div>
+<script src="app.js"></script>
+<script src="components.js"></script>
+</body>
+</html>

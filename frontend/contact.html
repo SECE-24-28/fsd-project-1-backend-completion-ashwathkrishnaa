@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us – ASKR Clothing</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+.contact-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; padding: 0 5% 80px; max-width: 1200px; margin: 0 auto; }
+.contact-info-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 32px; margin-bottom: 20px; }
+.contact-detail { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 24px; }
+.contact-detail:last-child { margin-bottom: 0; }
+.contact-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(255,107,0,0.1); border: 1px solid rgba(255,107,0,0.2); display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.1rem; flex-shrink: 0; }
+.contact-label { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+.contact-value { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+.contact-value a { color: var(--text); text-decoration: none; transition: color 0.3s; }
+.contact-value a:hover { color: var(--accent); }
+.contact-form-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 36px; }
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.map-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: hidden; height: 220px; position: relative; }
+.map-placeholder { width: 100%; height: 100%; background: var(--secondary); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); gap: 10px; }
+.map-placeholder i { font-size: 2rem; color: var(--accent); }
+.social-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+.social-contact-btn { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: all 0.3s; flex: 1; min-width: 130px; font-family: 'Poppins', sans-serif; }
+.social-contact-btn:hover { transform: translateY(-2px); }
+.social-contact-btn.instagram:hover { background: rgba(225,48,108,0.1); border-color: #E1306C; color: #E1306C; }
+.social-contact-btn.facebook:hover { background: rgba(66,103,178,0.1); border-color: #4267B2; color: #4267B2; }
+.social-contact-btn.twitter:hover { background: rgba(29,161,242,0.1); border-color: #1DA1F2; color: #1DA1F2; }
+.social-contact-btn.whatsapp:hover { background: rgba(37,211,102,0.1); border-color: #25D366; color: #25D366; }
+@media (max-width:768px) { .contact-layout { grid-template-columns: 1fr; } .form-grid-2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+
+<div class="page-header">
+  <h1>Get in <span style="color:var(--accent)">Touch</span></h1>
+  <p>We're here to help — reach out anytime</p>
+  <div class="breadcrumb"><a href="home.html">Home</a><span class="sep">›</span><span>Contact</span></div>
+</div>
+
+<div class="contact-layout">
+  <!-- LEFT: INFO -->
+  <div>
+    <div class="contact-info-card">
+      <h3 style="font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:24px">Contact Information</h3>
+      <div class="contact-detail">
+        <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+        <div><div class="contact-label">Phone</div>
+          <div class="contact-value"><a href="tel:+918888888888">+91 88888 88888</a></div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:3px">Mon–Sat: 9AM – 8PM</div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+        <div><div class="contact-label">Email</div>
+          <div class="contact-value"><a href="mailto:support@askrclothing.com">support@askrclothing.com</a></div>
+          <div class="contact-value" style="font-size:0.82rem;margin-top:4px"><a href="mailto:sales@askrclothing.com" style="color:var(--text-muted)">sales@askrclothing.com</a></div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div><div class="contact-label">Head Office</div>
+          <div class="contact-value">ASKR House, 4th Floor,<br>Brigade Road, Bangalore – 560025<br>Karnataka, India</div>
+        </div>
+      </div>
+      <div class="contact-detail" style="margin-bottom:0">
+        <div class="contact-icon"><i class="fas fa-clock"></i></div>
+        <div><div class="contact-label">Support Hours</div>
+          <div class="contact-value">24/7 Online Support</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:3px">Phone: Mon–Sat 9AM–8PM</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-info-card">
+      <h3 style="font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px">Follow Us</h3>
+      <div class="social-grid">
+        <a href="#" class="social-contact-btn instagram"><i class="fab fa-instagram"></i> Instagram</a>
+        <a href="#" class="social-contact-btn facebook"><i class="fab fa-facebook-f"></i> Facebook</a>
+        <a href="#" class="social-contact-btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="#" class="social-contact-btn whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="map-card">
+      <div class="map-placeholder">
+        <i class="fas fa-map-marker-alt"></i>
+        <div style="font-weight:600;font-size:0.9rem">ASKR Clothing</div>
+        <div style="font-size:0.78rem">Brigade Road, Bangalore</div>
+        <a href="https://maps.google.com" target="_blank" class="btn btn-outline btn-sm" style="margin-top:4px"><i class="fas fa-directions"></i> Get Directions</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: FORM -->
+  <div>
+    <div class="contact-form-card">
+      <h3 style="font-size:1.3rem;font-weight:800;margin-bottom:6px">Send Us a <span style="color:var(--accent)">Message</span></h3>
+      <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:28px">We'll get back to you within 2 hours during business hours.</p>
+      <form onsubmit="submitContact(event)">
+        <div class="form-grid-2">
+          <div class="form-group"><label>Full Name</label><div class="input-group"><i class="fas fa-user input-icon"></i><input type="text" class="form-control" placeholder="Your name" required></div></div>
+          <div class="form-group"><label>Email Address</label><div class="input-group"><i class="fas fa-envelope input-icon"></i><input type="email" class="form-control" placeholder="you@email.com" required></div></div>
+        </div>
+        <div class="form-group"><label>Phone Number <span style="color:var(--text-muted);font-size:0.75rem">(Optional)</span></label>
+          <div class="input-group"><i class="fas fa-phone input-icon"></i><input type="tel" class="form-control" placeholder="+91 XXXXXXXXXX"></div>
+        </div>
+        <div class="form-group"><label>Subject</label>
+          <select class="form-control sort-select" style="width:100%;background:rgba(255,255,255,0.05)" required>
+            <option value="" style="background:#1a1a1a">Select a subject</option>
+            <option style="background:#1a1a1a">Order Issue</option>
+            <option style="background:#1a1a1a">Shipping Query</option>
+            <option style="background:#1a1a1a">Return / Refund</option>
+            <option style="background:#1a1a1a">Product Inquiry</option>
+            <option style="background:#1a1a1a">Account Help</option>
+            <option style="background:#1a1a1a">Partnership / Collaboration</option>
+            <option style="background:#1a1a1a">Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Order ID <span style="color:var(--text-muted);font-size:0.75rem">(If applicable)</span></label>
+          <div class="input-group"><i class="fas fa-hashtag input-icon"></i><input type="text" class="form-control" placeholder="ASKR12345678"></div>
+        </div>
+        <div class="form-group"><label>Your Message</label>
+          <textarea class="form-control" rows="5" placeholder="Describe your issue or question in detail..." required style="resize:vertical;min-height:130px"></textarea>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-paper-plane"></i> Send Message</button>
+          <div style="font-size:0.78rem;color:var(--text-muted)"><i class="fas fa-shield-alt" style="color:var(--accent)"></i> Your info is safe with us</div>
+        </div>
+      </form>
+    </div>
+
+    <!-- QUICK HELP -->
+    <div style="background:var(--card-bg);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;margin-top:20px">
+      <h4 style="font-size:0.85rem;margin-bottom:16px">Quick Help</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <a href="tracking.html" style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(255,255,255,0.04);border-radius:10px;text-decoration:none;color:var(--text-muted);font-size:0.82rem;transition:all 0.3s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'"><i class="fas fa-map-marker-alt" style="color:var(--accent)"></i> Track My Order</a>
+        <a href="faq.html" style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(255,255,255,0.04);border-radius:10px;text-decoration:none;color:var(--text-muted);font-size:0.82rem;transition:all 0.3s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'"><i class="fas fa-question-circle" style="color:var(--accent)"></i> View FAQ</a>
+        <a href="profile.html" style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(255,255,255,0.04);border-radius:10px;text-decoration:none;color:var(--text-muted);font-size:0.82rem;transition:all 0.3s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'"><i class="fas fa-undo" style="color:var(--accent)"></i> Return / Exchange</a>
+        <a href="#" style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(255,255,255,0.04);border-radius:10px;text-decoration:none;color:var(--text-muted);font-size:0.82rem;transition:all 0.3s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'"><i class="fas fa-comments" style="color:var(--accent)"></i> Live Chat</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="app.js"></script>
+<script src="components.js"></script>
+<script>
+function submitContact(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+    btn.style.background = '#2ecc71';
+    showToast('✉️', 'Message received! We\'ll reply within 2 hours.');
+    setTimeout(() => { btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message'; btn.style.background = ''; btn.disabled = false; e.target.reset(); }, 3000);
+  }, 2000);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login – ASKR Clothing</title>
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(255,107,0,0.06) 0%, transparent 60%); pointer-events: none; }
+.login-box { width: 100%; max-width: 420px; animation: fadeInUp 0.6s ease; }
+.login-brand { text-align: center; margin-bottom: 36px; }
+.login-logo { width: 64px; height: 64px; border-radius: 16px; background: linear-gradient(135deg, var(--accent), #cc4400); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat',sans-serif; font-weight: 900; font-size: 1.4rem; color: #fff; margin: 0 auto 16px; box-shadow: 0 8px 30px rgba(255,107,0,0.4); }
+.login-brand h1 { font-size: 1.6rem; font-weight: 900; letter-spacing: 4px; margin-bottom: 4px; }
+.login-brand h1 span { color: var(--accent); }
+.login-brand p { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; }
+.login-card { background: var(--card-bg); border: 1px solid rgba(255,107,0,0.12); border-radius: 20px; padding: 36px; }
+.login-card h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+.login-card p { font-size: 0.83rem; color: var(--text-muted); margin-bottom: 28px; }
+.input-wrap { position: relative; }
+.input-wrap i.prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; }
+.input-wrap .form-control { padding-left: 40px; }
+.input-wrap .eye-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; }
+.demo-creds { background: rgba(255,107,0,0.06); border: 1px solid rgba(255,107,0,0.15); border-radius: 10px; padding: 12px 16px; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.8; }
+.demo-creds strong { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="login-box">
+  <div class="login-brand">
+    <div class="login-logo">A</div>
+    <h1>ASK<span>R</span></h1>
+    <p>Admin Control Panel</p>
+  </div>
+  <div class="login-card">
+    <h2>Welcome Back 👋</h2>
+    <p>Sign in to manage your store</p>
+    <div class="demo-creds">
+      <strong>Demo Credentials</strong><br>
+      Email: <strong>admin@askrclothing.com</strong><br>
+      Password: <strong>admin@123</strong>
+    </div>
+    <form onsubmit="handleAdminLogin(event)">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <div class="input-wrap">
+          <i class="fas fa-envelope prefix"></i>
+          <input type="email" class="form-control" id="adminEmail" value="admin@askrclothing.com" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-wrap">
+          <i class="fas fa-lock prefix"></i>
+          <input type="password" class="form-control" id="adminPassword" value="admin@123" required>
+          <button type="button" class="eye-btn" onclick="toggleEye(this)"><i class="far fa-eye"></i></button>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <label style="display:flex;gap:8px;align-items:center;cursor:pointer;font-size:0.82rem;color:var(--text-muted)">
+          <input type="checkbox" checked style="accent-color:var(--accent)"> Remember me
+        </label>
+        <a href="#" style="font-size:0.82rem;color:var(--accent);text-decoration:none">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;" id="loginBtn">
+        <i class="fas fa-sign-in-alt"></i> Sign In to Admin
+      </button>
+    </form>
+  </div>
+  <p style="text-align:center;margin-top:20px;font-size:0.78rem;color:var(--text-muted)">
+    <i class="fas fa-shield-alt" style="color:var(--accent)"></i> Secured Admin Access Only
+  </p>
+</div>
+<script src="admin.js"></script>
+<script>
+// Override auth guard for login page
+document.addEventListener('DOMContentLoaded', () => {});
+function toggleEye(btn) {
+  const inp = btn.closest('.input-wrap').querySelector('input');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.innerHTML = `<i class="far fa-eye${inp.type === 'text' ? '-slash' : ''}"></i>`;
+}
+function handleAdminLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('adminEmail').value;
+  const pass  = document.getElementById('adminPassword').value;
+  const btn   = document.getElementById('loginBtn');
+  if (email === 'admin@askrclothing.com' && pass === 'admin@123') {
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+    btn.disabled = true;
+    setTimeout(() => {
+      localStorage.setItem('askr_admin', JSON.stringify({ email, name: 'Admin', role: 'superadmin' }));
+      window.location.href = 'dashboard.html';
+    }, 1500);
+  } else {
+    alert('Invalid credentials! Use demo credentials above.');
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Categories – ASKR Admin</title>
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body data-title="Categories" data-breadcrumb="Categories">
+<div class="admin-wrapper">
+  <div id="sidebar-placeholder"></div>
+  <div class="main-content" id="mainContent">
+    <div id="header-placeholder"></div>
+    <div class="page-content">
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+        <div><h2 style="font-size:1.1rem;font-weight:700">Category Management</h2></div>
+        <button class="btn btn-primary" onclick="openModal('catModal')"><i class="fas fa-plus"></i> Add Category</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px" id="categoriesGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY MODAL -->
+<div class="modal-overlay" id="catModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <h3>Add Category</h3>
+      <button class="modal-close" onclick="closeModal('catModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Category Name *</label><input type="text" class="form-control" id="catName" placeholder="e.g. Accessories"></div>
+      <div class="form-group"><label class="form-label">Parent Category</label>
+        <select class="form-control"><option>None (Top Level)</option><option>Men</option><option>Women</option><option>Kids</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" rows="2" placeholder="Category description..."></textarea></div>
+      <div class="form-group"><label class="form-label">Icon (Font Awesome class)</label><input type="text" class="form-control" placeholder="e.g. fas fa-tshirt"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="closeModal('catModal');showToast('✅','Category added','success')"><i class="fas fa-save"></i> Save</button>
+      <button class="btn btn-outline" onclick="closeModal('catModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+<script src="admin-components.js"></script>
+<script>
+const categories = [
+  { name:'Men\'s',  icon:'fas fa-male',   products:520, subcats:['Shirts','T-Shirts','Jeans','Hoodies','Jackets'], color:'var(--accent)' },
+  { name:'Women\'s',icon:'fas fa-female', products:680, subcats:['Sarees','Kurtis','Dresses','Tops','Jeans'], color:'#B76E79' },
+  { name:'Kids\'',  icon:'fas fa-child',  products:280, subcats:['Boys Wear','Girls Wear','Infant Wear'], color:'#4FC3F7' },
+  { name:'Accessories',icon:'fas fa-glasses',products:150,subcats:['Bags','Belts','Caps','Wallets'], color:'var(--gold)' },
+];
+
+document.getElementById('categoriesGrid').innerHTML = categories.map(c => `
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:42px;height:42px;border-radius:10px;background:rgba(255,107,0,0.1);display:flex;align-items:center;justify-content:center;color:${c.color};font-size:1.1rem"><i class="${c.icon}"></i></div>
+        <div><h3 style="font-size:0.9rem">${c.name}</h3><div style="font-size:0.75rem;color:var(--text-muted)">${c.products} products</div></div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-xs"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-xs"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>
+    <div class="admin-card-body">
+      <div style="font-size:0.72rem;color:var(--text-muted);letter-spacing:1px;margin-bottom:10px">SUBCATEGORIES</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        ${c.subcats.map(s => `<span style="padding:4px 10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;font-size:0.75rem;color:var(--text-muted)">${s}</span>`).join('')}
+        <button onclick="showToast('✅','Subcategory added')" style="padding:4px 10px;background:rgba(255,107,0,0.08);border:1px dashed rgba(255,107,0,0.3);border-radius:6px;font-size:0.75rem;color:var(--accent);cursor:pointer"><i class="fas fa-plus"></i></button>
+      </div>
+    </div>
+  </div>`).join('');
+</script>
+</body>
+</html>
